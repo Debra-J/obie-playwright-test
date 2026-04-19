@@ -12,6 +12,14 @@ A basic end-to-end test for the [Obie Insurance](https://www.obieinsurance.com) 
 - Confirms the "Get a quote" nav link exists
 - Takes a full-page screenshot
 
+## Browsers
+
+The test runs across three browsers:
+
+- Chromium (Chrome)
+- Firefox
+- WebKit (Safari)
+
 ## Setup
 
 ```bash
@@ -22,10 +30,13 @@ npx playwright install
 ## Run the test
 
 ```bash
-npx playwright test --headed
+npx playwright test
 ```
+
+This opens all three browsers so you can watch the test run. The test also runs automatically on GitHub Actions whenever code is pushed.
 
 ## Files
 
 - `hptest.spec.js` — the test file
+- `playwright.config.js` — configures the three browsers
 - `obie-homepage.png` — screenshot captured during the test run
