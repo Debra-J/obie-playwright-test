@@ -4,7 +4,8 @@ module.exports = defineConfig({
   testDir: './',
   timeout: 30000,
   use: {
-    headless: false,
+    // Run headed locally, headless on GitHub Actions
+    headless: !!process.env.CI,
   },
   projects: [
     {
