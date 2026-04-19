@@ -10,6 +10,7 @@ A basic end-to-end test for the [Obie Insurance](https://www.obieinsurance.com) 
 - Finds the address input and types a test address
 - Confirms the "Get protected" button exists
 - Confirms the "Get a quote" nav link exists
+- Monitors API network calls and verifies they return successfully
 - Takes a full-page screenshot
 
 ## Browsers
