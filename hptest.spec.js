@@ -1,6 +1,17 @@
 const { test, expect } = require('@playwright/test');
 
 test('obie homepage test', async ({ page }) => {
+  // Listen for API calls the page makes
+  const apiCalls = [];
+  page.on('response', response => {
+    const url = response.url();
+    // Skip static files like images, CSS, fonts
+    if (url.includes('/api/') || url.includes('autocomplete') || url.includes('geocode') || url.includes('graphql')) {
+      apiCalls.push({ url: url, status: response.status() });
+      console.log(`📡 API call: ${url} — Status: ${response.status()}`);
+    }
+  });
+
   // Go to Obie homepage
   await page.goto('https://www.obieinsurance.com');
 
@@ -35,6 +46,21 @@ test('obie homepage test', async ({ page }) => {
   // Take a screenshot
   await page.screenshot({ path: 'obie-homepage.png', fullPage: true });
   console.log("✅ Screenshot saved");
+
+  // Report all API calls captured during the test
+  console.log(`\n📊 API Summary: ${apiCalls.length} API call(s) detected`);
+  apiCalls.forEach((call, i) => {
+    const statusIcon = call.status === 200 ? "✅" : "❌";
+    console.log(`  ${statusIcon} ${i + 1}. [${call.status}] ${call.url}`);
+  });
+
+  // Verify no API calls failed
+  const failedCalls = apiCalls.filter(call => call.status >= 400);
+  if (failedCalls.length > 0) {
+    console.log(`\n⚠️ ${failedCalls.length} API call(s) returned errors!`);
+  } else {
+    console.log(`\n✅ All API calls returned successfully`);
+  }
 
   console.log("🎉 Test completed!");
 });
